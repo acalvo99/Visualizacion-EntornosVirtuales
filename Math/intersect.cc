@@ -16,7 +16,18 @@
 //    IINTERSECT intersect
 
 int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
-
+	float radio=bs->m_radius;
+	float dist=pl->distance(bs->m_centre);
+	if(dist<=radio){
+		return IINTERSECT;
+	}else{
+		int x=pl->whichSide(bs->m_centre);
+		if(x==-1){
+			return -IREJECT;
+		}else if(x==1){
+			return +IREJECT;
+		}
+	}
 }
 
 
@@ -26,11 +37,16 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 //    IREJECT don't intersect
 
 int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
-
+	if(bba->m_max.x()<=bbb->m_min.x() || bba->m_max.y()<=bbb->m_min.y() || bba->m_max.z()<=bbb->m_min.z()){
+		return IREJECT;
+	}else{
+		return IINTERSECT;
+	}
 }
 
 // @@ TODO: test if a BBox and a plane intersect.
 //! Returns :
+//    IINTERSECT inters
 //   +IREJECT outside
 //   -IREJECT inside
 //    IINTERSECT intersect
