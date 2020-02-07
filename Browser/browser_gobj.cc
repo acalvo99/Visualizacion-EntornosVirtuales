@@ -185,12 +185,17 @@ void create_scene_tmesh() {
 	mesh->addPoint(Vector3(-0.25, -0.25, -0.25)); // P1
 	mesh->addPoint(Vector3(0.25, -0.25, -0.25)); // P2
 	mesh->addPoint(Vector3(0.25,  0.25, -0.25)); // P3
+	mesh->addPoint(Vector3(-1.5,  1.5, -0.25)); // P4
+	mesh->addPoint(Vector3(-1.5, -1.5, -0.25)); // P5
+	mesh->addPoint(Vector3(1.5, -1.5, -0.25)); // P6
+	mesh->addPoint(Vector3(1.5,  1.5, -0.25)); // P7
 
-	mesh->addTriangle(0, 1, 2);    // P0 - P1 - P2
+	mesh->addTriangle(0, 1, 2); // P0 - P1 - P2
 	mesh->addTriangle(2, 3, 0); // P2 - P3 - P0
 
 	gObj = GObjectManager::instance()->create("MG_GOBJ");
 	gObj->add(mesh);
+
 }
 
 int main(int argc, char** argv) {

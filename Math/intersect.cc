@@ -37,10 +37,21 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 //    IREJECT don't intersect
 
 int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
-	if(bba->m_max.x()<=bbb->m_min.x() || bba->m_max.y()<=bbb->m_min.y() || bba->m_max.z()<=bbb->m_min.z()){
-		return IREJECT;
-	}else{
+	Vector3 bbaMin=bba->m_min;
+	Vector3 bbaMax=bba->m_max;
+	Vector3 bbbMin=bbb->m_min;
+	Vector3 bbbMax=bbb->m_max;
+	if((bbaMin.x()>bbbMin.x() && bbaMin.x()<bbbMax.x()) &&
+		(bbaMin.y()>bbbMin.y() && bbaMin.y()<bbbMax.y()) &&
+		(bbaMin.z()>bbbMin.z() && bbaMin.z()<bbbMax.z())){
+			return IINTERSECT;
+		}
+	if((bbaMax.x()>bbbMin.x() && bbaMax.x()<bbbMax.x()) &&
+		(bbaMax.y()>bbbMin.y() && bbaMax.y()<bbbMax.y()) &&
+		(bbaMax.z()>bbbMin.z() && bbaMax.z()<bbbMax.z())){
 		return IINTERSECT;
+	}else{
+		return IREJECT;
 	}
 }
 
@@ -52,7 +63,7 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 //    IINTERSECT intersect
 
 int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
-
+	
 }
 
 // Test if two BSpheres intersect.
