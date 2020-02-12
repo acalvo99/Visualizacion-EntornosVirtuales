@@ -199,6 +199,12 @@ void create_scene_tmesh() {
 }
 
 int main(int argc, char** argv) {
+	Trfm3D M;
+	M.setTrans(Vector3(0,0,1));
+	Vector3 P=M.transformPoint(Vector3(1,1,1));
+	print("P=");
+	P.print();
+
 
 	srand(time(0));
 	InitRenderContext(argc, argv, 900, 700, 100, 0);
