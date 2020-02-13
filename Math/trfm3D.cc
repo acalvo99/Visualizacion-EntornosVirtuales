@@ -213,7 +213,11 @@ Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 
 Vector3 Trfm3D::transformVector(const Vector3 & V) const {
 	Vector3 res;
-
+	float Rx=m_c1[0]*V[0]+m_c2[0]*V[1]+m_c3[0]*V[2];
+	float Ry=m_c1[1]*V[0]+m_c2[1]*V[1]+m_c3[1]*V[2];
+	float Rz=m_c1[2]*V[0]+m_c2[2]*V[1]+m_c3[2]*V[2];
+	Vector3 R=Vector3(Rx,Ry,Rz);
+	res = m_scl* R;
 	return res;
 }
 
@@ -400,7 +404,10 @@ void Trfm3D::setScale(float scale ) {
 //
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
-
+	this->setTrans(-1*P);
+	this->addRotVec(V,angle);
+	this->addTrans(P);
+	this->transformVector(V);
 }
 
 

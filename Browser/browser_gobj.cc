@@ -202,7 +202,6 @@ int main(int argc, char** argv) {
 	Trfm3D M;
 	M.setTrans(Vector3(0,0,1));
 	Vector3 P=M.transformPoint(Vector3(1,1,1));
-	print("P=");
 	P.print();
 
 
