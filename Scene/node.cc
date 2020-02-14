@@ -268,8 +268,10 @@ void Node::addChild(Node *theChild) {
 	if (theChild == 0) return;
 	if (m_gObject) {
 		// node has a gObject, so print warning
+		printf("Node has a gObject\n");
 	} else {
 		// node does not have gObject, so attach child
+		m_children.push_back(theChild);
 	}
 }
 
@@ -387,7 +389,18 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC );
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	rs->push(RenderState::modelview); // push current matrix into modelview stack
+	rs->addTrfm(RenderState::modelview, m_plars->pop(RenderState::modelview); // pop matrix from modelview stack to currentcement); // Add T transformation to modelview
+	if(m_children.size()==0){
+		m_children->draw();
+	}else{
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end(); 
+			it != end; ++it) {
+        	Node *theChild = *it;
+    	    theChild->draw(); // or any other thing
+    	}
+	}
+	rs->pop(RenderState::modelview); // pop matrix from modelview stack to current
 
 	/* =================== END YOUR CODE HERE ====================== */
 
