@@ -273,6 +273,7 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
 		m_children.push_back(theChild);
 		theChild->m_parent=this;
+		theChild->updateGS();
 	}
 }
 
@@ -298,6 +299,8 @@ void Node::detach() {
 //    - placementWC of node and parents are up-to-date
 
 void Node::propagateBBRoot() {
+	this->updateBB();
+
 }
 
 // @@ TODO: auxiliary function
@@ -326,6 +329,15 @@ void Node::propagateBBRoot() {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateBB () {
+	if(m_gObject==0){
+
+	}else{
+//		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+//        it != end; ++it) {
+//        Node *theChild = *it;
+//        theChild->print(); 
+//    }
+	}
 }
 
 // @@ TODO: Update WC (world coordinates matrix) of a node and
@@ -344,7 +356,18 @@ void Node::updateBB () {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateWC() {
-	
+	if(m_parent==0){
+		m_placementWC=0;
+	}else{
+		m_placementWC=m_parent->m_placementWC;
+	}
+	for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+        it != end; ++it) {
+        Node *theChild = *it;
+        theChild->updateWC(); 
+        theChild->updateBB();
+    }
+
 }
 
 // @@ TODO:
