@@ -272,6 +272,7 @@ void Node::addChild(Node *theChild) {
 	} else {
 		// node does not have gObject, so attach child
 		m_children.push_back(theChild);
+		theChild->m_parent=this;
 	}
 }
 
@@ -343,6 +344,7 @@ void Node::updateBB () {
 //    See Recipe 1 in for knowing how to iterate through children.
 
 void Node::updateWC() {
+	
 }
 
 // @@ TODO:
@@ -390,9 +392,9 @@ void Node::draw() {
 
 	/* =================== PUT YOUR CODE HERE ====================== */
 	rs->push(RenderState::modelview); // push current matrix into modelview stack
-	rs->addTrfm(RenderState::modelview, m_plars->pop(RenderState::modelview); // pop matrix from modelview stack to currentcement); // Add T transformation to modelview
+	rs->addTrfm(RenderState::modelview,m_placement); // Add T transformation to modelview
 	if(m_children.size()==0){
-		m_children->draw();
+		m_gObject->draw();
 	}else{
 		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end(); 
 			it != end; ++it) {
