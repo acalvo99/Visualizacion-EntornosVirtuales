@@ -273,7 +273,7 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
 		m_children.push_back(theChild);
 		theChild->m_parent=this;
-		theChild->updateGS();
+		this->updateGS();
 	}
 }
 
@@ -300,7 +300,9 @@ void Node::detach() {
 
 void Node::propagateBBRoot() {
 	this->updateBB();
-
+	if(m_parent!=0){
+		m_parent->propagateBBRoot();
+	}
 }
 
 // @@ TODO: auxiliary function
@@ -330,13 +332,13 @@ void Node::propagateBBRoot() {
 
 void Node::updateBB () {
 	if(m_gObject==0){
-
+	//    for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+	//        it != end; ++it) {
+	//        Node *theChild = *it;
+	//        theChild->print(); // or any other thing
+	//    }
 	}else{
-//		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
-//        it != end; ++it) {
-//        Node *theChild = *it;
-//        theChild->print(); 
-//    }
+
 	}
 }
 
@@ -357,17 +359,17 @@ void Node::updateBB () {
 
 void Node::updateWC() {
 	if(m_parent==0){
-		m_placementWC=0;
+		m_placementWC->clone(m_placement);
 	}else{
-		m_placementWC=m_parent->m_placementWC;
+		m_placementWC->clone(m_parent->m_placementWC);
+		m_placementWC->add(m_placement);
 	}
 	for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
         Node *theChild = *it;
         theChild->updateWC(); 
-        theChild->updateBB();
     }
-
+    this->updateBB();
 }
 
 // @@ TODO:
@@ -379,6 +381,10 @@ void Node::updateWC() {
 // - Propagate Bounding Box to root (propagateBBRoot), starting from the parent, if parent exists.
 
 void Node::updateGS() {
+	this->updateWC();
+	if(m_parent!=0){
+		m_parent->propagateBBRoot();
+	}
 }
 
 // @@ TODO:
