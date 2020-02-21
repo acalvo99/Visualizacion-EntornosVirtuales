@@ -273,7 +273,7 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
 		m_children.push_back(theChild);
 		theChild->m_parent=this;
-		this->updateGS();
+		updateGS();
 	}
 }
 
@@ -299,7 +299,7 @@ void Node::detach() {
 //    - placementWC of node and parents are up-to-date
 
 void Node::propagateBBRoot() {
-	this->updateBB();
+	updateBB();
 	if(m_parent!=0){
 		m_parent->propagateBBRoot();
 	}
@@ -332,13 +332,16 @@ void Node::propagateBBRoot() {
 
 void Node::updateBB () {
 	if(m_gObject==0){
-	//    for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
-	//        it != end; ++it) {
-	//        Node *theChild = *it;
-	//        theChild->print(); // or any other thing
-	//    }
-	}else{
+		m_containerWC->init();
+	    for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+	        it != end; ++it) {
+	        Node *theChild = *it;
+	        m_containerWC->include(theChild->m_containerWC);
 
+	    }
+	}else{
+		m_containerWC->clone(m_gObject->getContainer());
+		m_containerWC->transform(m_placementWC);
 	}
 }
 
@@ -364,12 +367,14 @@ void Node::updateWC() {
 		m_placementWC->clone(m_parent->m_placementWC);
 		m_placementWC->add(m_placement);
 	}
-	for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+	if(m_gObject==0){
+		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
-        Node *theChild = *it;
-        theChild->updateWC(); 
-    }
-    this->updateBB();
+	        Node *theChild = *it;
+	        theChild->updateWC(); 
+    	}
+	}
+    updateBB();
 }
 
 // @@ TODO:
@@ -381,7 +386,7 @@ void Node::updateWC() {
 // - Propagate Bounding Box to root (propagateBBRoot), starting from the parent, if parent exists.
 
 void Node::updateGS() {
-	this->updateWC();
+	updateWC();
 	if(m_parent!=0){
 		m_parent->propagateBBRoot();
 	}
@@ -421,7 +426,7 @@ void Node::draw() {
 
 	/* =================== PUT YOUR CODE HERE ====================== */
 	rs->push(RenderState::modelview); // push current matrix into modelview stack
-	rs->addTrfm(RenderState::modelview,m_placement); // Add T transformation to modelview
+	rs->addTrfm(RenderState::modelview,m_placementWC); // Add T transformation to modelview
 	if(m_children.size()==0){
 		m_gObject->draw();
 	}else{
