@@ -477,7 +477,29 @@ void Node::frustumCull(Camera *cam) {
 const Node *Node::checkCollision(const BSphere *bsph) const {
 	if (!m_checkCollision) return 0;
 	/* =================== PUT YOUR CODE HERE ====================== */
+	if (m_gObject == 0) {
+		if (BSphereBBoxIntersect(bsph, m_containerWC) == IINTERSECT) {
+			const Node * umearenEmaitza;
+			for(list<Node *>::const_iterator it = m_children.begin(), end = m_children.end();
+        		it != end; ++it) {
+        		const Node *theChild = *it;
+        		umearenEmaitza = theChild->checkCollision(bsph);
+        		if (umearenEmaitza != 0){
+					return umearenEmaitza;
+				} 
+    		}
 
-	return 0; /* No collision */
+		}
+		return 0; /* No collision */
+		
+	}
+	else {
+		if (BSphereBBoxIntersect(bsph, m_containerWC) == IINTERSECT){
+			return this;
+		} 
+		else{
+			return 0; /* No collision */
+		}
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
