@@ -74,8 +74,8 @@ int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
 			urrunekoa[i] = kuboaren_max[i];
 		}
 		else {
-			gertukoa[i] = max[i];
-			urrunekoa[i] = min[i];
+			gertukoa[i] = kuboaren_max[i];
+			urrunekoa[i] = kuboaren_min[i];
 		}
 	}
 	
@@ -83,7 +83,7 @@ int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
 		return IINTERSECT;
 	}
 	else {
-		if (aldeaGertu < 0) {
+		if (thePlane->whichSide(gertukoa) < 0) {
 			return -IREJECT;
 		}
 		else {
