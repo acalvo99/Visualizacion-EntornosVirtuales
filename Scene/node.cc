@@ -425,10 +425,12 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC );
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-	rs->push(RenderState::modelview); // push current matrix into modelview stack
-	rs->addTrfm(RenderState::modelview,m_placementWC); // Add T transformation to modelview
+	
 	if(m_children.size()==0){
+        rs->push(RenderState::modelview); // push current matrix into modelview stack
+	    rs->addTrfm(RenderState::modelview,m_placementWC); // Add T transformation to modelview
 		m_gObject->draw();
+        rs->pop(RenderState::modelview); // pop matrix from modelview stack to current
 	}else{
 		for(list<Node *>::iterator it = m_children.begin(), end = m_children.end(); 
 			it != end; ++it) {
@@ -436,8 +438,6 @@ void Node::draw() {
     	    theChild->draw(); // or any other thing
     	}
 	}
-	rs->pop(RenderState::modelview); // pop matrix from modelview stack to current
-
 	/* =================== END YOUR CODE HERE ====================== */
 
 	// Restore shaders
@@ -462,7 +462,25 @@ void Node::setCulled(bool culled) {
 //          update m_isCulled accordingly.
 
 void Node::frustumCull(Camera *cam) {
+    unsigned int zero = 0;
+	if (cam->checkFrustum(m_containerWC, &zero) == 1){
+        setCulled(true); //kanpoan
+	}else {
+		if (cam->checkFrustum(m_containerWC, &zero) == -1){
+            setCulled(false); //barruan
+		}else {
+            setCulled(false);
+			if (m_gObject == 0) {
+				for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
+        			it != end; ++it) {
+        			Node *theChild = *it;
+        			theChild->frustumCull(cam);
+    			}
+			}
+		}
+	}
 }
+
 
 // @@ TODO: Check whether a BSphere (in world coordinates) intersects with a
 // (sub)tree.
