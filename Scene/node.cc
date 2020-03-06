@@ -469,7 +469,7 @@ void Node::frustumCull(Camera *cam) {
 		if (cam->checkFrustum(m_containerWC, &zero) == -1){
             setCulled(false); //barruan
 		}else {
-            setCulled(false);
+            m_isCulled = false;
 			if (m_gObject == 0) {
 				for(list<Node *>::iterator it = m_children.begin(), end = m_children.end();
         			it != end; ++it) {
