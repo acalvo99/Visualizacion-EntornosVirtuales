@@ -538,6 +538,7 @@ void animate(int value) {
 
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
 	if (runAnimation) {
+        RenderState::instance()->setSc(...);
 		// Force a redisplay to render the new image
 
 		glutPostRedisplay();
