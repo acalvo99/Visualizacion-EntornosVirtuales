@@ -29,8 +29,6 @@
 class RenderState {
 
 public:
-    float getSc() const;
-    void setSc(float v);
 
 	static RenderState *instance();
 
@@ -101,6 +99,9 @@ public:
 	 * @param matrixMode the mode (see stack_t)
 	 */
 	void printTop(stack_t matrixMode);
+
+	float getSc() const;
+    	void setSc(float v);
 
 	///////////////////////////////////////////
 	// Shaders
@@ -198,7 +199,6 @@ public:
 	void print() const;
 
 private:
-    float m_sc;
 
 	RenderState();
 	~RenderState();
@@ -231,6 +231,7 @@ private:
 
 	ShaderProgram *m_activeShader;
 	bool m_drawBBox;
+	float m_sc;
 
 	// SkyBox
 

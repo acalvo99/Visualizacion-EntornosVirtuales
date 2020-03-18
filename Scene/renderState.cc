@@ -14,10 +14,7 @@ RenderState::RenderState() :
 	m_ambient(Vector3(0.05f, 0.05f, 0.05)),
 	m_activeShader(0),
 	m_drawBBox(false),
-    m_sc(1.0f) {}
-
-    float RenderState::getSc() const { return m_sc; }
-    void RenderState::setSc(float v) { m_sc = v; }
+   	m_sc(1.0f) {}
 
 RenderState::~RenderState() {}
 
@@ -102,6 +99,14 @@ const GLfloat *RenderState::getGLMatrix(stack_t matrixMode) {
 
 void RenderState::printTop(stack_t matrixMode) {
 	chooseStack(matrixMode)->print();
+}
+
+float RenderState::getSc() const { 
+	return m_sc; 
+}
+
+void RenderState::setSc(float v) { 
+	m_sc = v; 
 }
 
 ///////////////////////////////////////////

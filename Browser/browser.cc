@@ -22,6 +22,8 @@ static int prevTime;
 // Global variables mouse
 static int mouse_pre_x = -1;
 static int mouse_pre_y = -1;
+static float angle = 0.0f;
+
 
 static void switchAllLights(bool onOff) {
 	for(LightManager::iterator it = LightManager::instance()->begin(), end = LightManager::instance()->end();
@@ -538,9 +540,10 @@ void animate(int value) {
 
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
 	if (runAnimation) {
-        RenderState::instance()->setSc(...);
 		// Force a redisplay to render the new image
-
+		angle += 0.05;
+		RenderState* rs = RenderState::instance();
+		rs->setSc(fabsf(cosf(angle)));
 		glutPostRedisplay();
 	}
 	// ##### END OF GAME/APP MAIN CODE #####
