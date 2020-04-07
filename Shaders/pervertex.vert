@@ -34,15 +34,19 @@ varying vec2 f_texCoord;
 
 
 void main() {
-	//argi bakarrarekin
 	vec4 normala = modelToCameraMatrix * vec4(v_normal, 0.0); 
-	vec4 l = normalize(-theLights[0].position);
-	vec4 r = 2*dot(normala, l)*normala - l;
-	vec4 v = normalize(-(theLights[0].position-(vec4(v_position, 0.0))));
-	vec3 diff = theMaterial.diffuse*theLights[0].diffuse; //diffuse
-	vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[0].specular); //specular
-	vec3 i = scene_ambient + max(0, dot(normala, l))*(diff + spec);
-	f_color = vec4(i, 1.0);
+	//argi bat baino gehiago
+	for(int i=0; i<4; i++){
+		vec4 l = normalize(-theLights[i].position);
+		vec4 r = 2*dot(normala, l)*normala - l;
+		vec4 v = normalize(-(theLights[i].position-(vec4(v_position, 0.0))));
+		//diffuse
+		vec3 diff = theMaterial.diffuse*theLights[i].diffuse;	 
+		//specular
+		vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);    
+	}
+	vec3 ivec = scene_ambient + max(0, dot(normala, l))*(diff + spec);
+	f_color = vec4(ivec, 1.0);
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
 	
 }
