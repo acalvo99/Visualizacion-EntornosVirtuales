@@ -89,7 +89,9 @@ void Light::placeScene() {
 	Trfm3D &modelView = rs->top(RenderState::modelview);
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	m_positionEye = modelView.transformVector(m_position);
+	m_positionEye = modelView.transformPoint(m_position);
+	m_spotDirectionEye = modelView.transformVector(m_spotDirection);
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -167,18 +169,18 @@ static const char* light_type_str(Light::type_t t) {
 void Light::print() {
 
 	printf("*** Light \'%s\'\tType:%s\tSwitched:%s\n", m_name.c_str(), light_type_str(m_type), m_switched ? "ON" : "OFF");
-	// printf("*** Name: %s\n", m_name.c_str());
-	// if( m_type == directional ) {
-	//	printf("Directional light");
-	// } else if( m_type == positional ) {
-	//	printf("Positional Light");
-	// } else {
-	//	printf("Spot Light");
-	// }
-	// if( m_switched )
-	//	printf(" Switched ON\n" );
-	// else
-	//	printf(" Switched OFF\n");
+	printf("*** Name: %s\n", m_name.c_str());
+	if( m_type == directional ) {
+		printf("Directional light");
+	} else if( m_type == positional ) {
+		printf("Positional Light");
+	} else {
+		printf("Spot Light");
+	}
+	if( m_switched )
+		printf(" Switched ON\n" );
+	else
+		printf(" Switched OFF\n");
 
 	printf(" Diffuse %04.2f %04.2f %04.2f\n",
 		   m_diffuse[0], m_diffuse[1],
