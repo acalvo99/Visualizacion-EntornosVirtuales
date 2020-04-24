@@ -59,7 +59,7 @@ void main() {
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
 			float distantzia = distance(theLights[i].position.xyz, erpina_kam);
 			vec3 ahuldura = theLights[i].attenuation;
-			batura = ahuldura * batura + max(0, dot(normala, l))*(diff + spec); 
+			batura = batura + (ahuldura * max(0, dot(normala, l))*(diff + spec)); 
 		} else{
 			//spot light
 		}
