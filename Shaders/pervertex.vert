@@ -34,7 +34,7 @@ varying vec2 f_texCoord;
 
 
 void main() {
-	vec4 normala = normalize(modelToCameraMatrix * vec4(v_normal, 0.0)).xyz; 
+	vec3 normala = normalize(modelToCameraMatrix * vec4(v_normal, 0.0)).xyz; 
 	vec3 erpina_kam = (modelToCameraMatrix * vec4(v_position, 1.0)).xyz;
 	vec3 v = -normalize(erpina_kam);
 	vec3 batura = vec3(0.0, 0.0, 0.0);
@@ -45,21 +45,22 @@ void main() {
 
 		if(theLights[i].position.w==0.0){
 			//direction light
-			vec4 l = normalize(-theLights[i].position.xyz);
-			vec4 r = 2*dot(normala, l)*normala - l;
+			vec3 l = normalize(-theLights[i].position.xyz);
+			vec3 r = 2*dot(normala, l)*normala - l;
 			//specular
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
 			batura = batura + max(0, dot(normala, l))*(diff + spec); 
 
 		}else if(theLights[i].cosCutOff==0.0){
 			//point light
-			vec4 l = normalize(-theLights[i].position.xyz - erpina_kam);
-			vec4 r = 2*dot(normala, l)*normala - l;
+			vec3 l = normalize(-theLights[i].position.xyz - erpina_kam);
+			vec3 r = 2*dot(normala, l)*normala - l;
 			//specular
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
 			float distantzia = distance(theLights[i].position.xyz, erpina_kam);
 			vec3 ahuldura = theLights[i].attenuation;
-			batura = batura + (ahuldura * max(0, dot(normala, l))*(diff + spec)); 
+			float d = 1 / (ahuldura[0] + ahuldura[1]*distantzia + ahuldura[2]*pow(distantzia, 2));
+			batura = batura + (d * max(0, dot(normala, l))*(diff + spec)); 
 		} else{
 			//spot light
 		}
