@@ -53,11 +53,11 @@ void main() {
 
 		}else if(theLights[i].cosCutOff==0.0){
 			//point light
-			vec4 l = normalize(-theLights[i].position.xyz);
+			vec4 l = normalize(-theLights[i].position.xyz - erpina_kam);
 			vec4 r = 2*dot(normala, l)*normala - l;
 			//specular
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
-			float distantzia = distance(theLights[i].position, erpina_kam);
+			float distantzia = distance(theLights[i].position.xyz, erpina_kam);
 			vec3 ahuldura = theLights[i].attenuation;
 			batura = ahuldura * batura + max(0, dot(normala, l))*(diff + spec); 
 		} else{
