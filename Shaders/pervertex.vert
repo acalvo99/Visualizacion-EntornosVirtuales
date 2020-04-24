@@ -34,20 +34,32 @@ varying vec2 f_texCoord;
 
 
 void main() {
-	vec4 normala = modelToCameraMatrix * vec4(v_normal, 0.0); 
-	//argi bat baino gehiago
+	vec4 normala = normalize(modelToCameraMatrix * vec4(v_normal, 0.0)).xyz; 
+	vec3 erpina_kam = (modelToCameraMatrix * vec4(v_position, 1.0)).xyz;
+	vec3 v = -normalize(erpina_kam);
 	vec3 batura = vec3(0.0, 0.0, 0.0);
+
 	for(int i=0; i<4; i++){
-		vec4 l = normalize(-theLights[i].position);
-		vec4 r = 2*dot(normala, l)*normala - l;
-		vec4 v = normalize(-(theLights[i].position-(vec4(v_position, 0.0))));
 		//diffuse
-		vec3 diff = theMaterial.diffuse*theLights[i].diffuse;	 
-		//specular
-		vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
-		batura = batura + max(0, dot(normala, l))*(diff + spec);  
+		vec3 diff = theMaterial.diffuse*theLights[i].diffuse;
+
+		if(theLights[i].position.w==0.0){
+			//direction light
+			vec4 l = normalize(-theLights[i].position.xyz);
+			vec4 r = 2*dot(normala, l)*normala - l;
+			//specular
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+			batura = batura + max(0, dot(normala, l))*(diff + spec); 
+
+		}else if(theLights[i].cosCutOff==0.0){
+			//point light
+		} else{
+
+			//spot light
+		}
 	}
 	vec3 ivec = scene_ambient + batura;
+
 	f_color = vec4(ivec, 1.0);
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
 	f_texCoord = v_texCoord;
