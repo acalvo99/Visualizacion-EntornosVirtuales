@@ -50,5 +50,6 @@ void main() {
 	vec3 ivec = scene_ambient + batura;
 	f_color = vec4(ivec, 1.0);
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
+	f_texCoord = v_texCoord;
 	
 }
