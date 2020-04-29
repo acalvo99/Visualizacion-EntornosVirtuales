@@ -149,7 +149,7 @@
                 "trfm" : [ { "trans" : [0, 0, -20] } ]
             },
             {
-				"shader" : "specular_map",
+		"shader" : "specular_map",
                 "name" : "cubospec",
                 "gObj" : "./obj/cubes/cubospec.obj",
                 "trfm" : [ { "trans" : [0, 0, 20] } ]
