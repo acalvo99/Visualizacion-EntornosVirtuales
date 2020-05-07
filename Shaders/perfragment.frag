@@ -47,13 +47,13 @@ void main() {
 
 		}else if(theLights[i].cosCutOff==0.0){
 			//point light
-			vec3 l = normalize(theLights[i].position.xyz - erpina_kam);
+			vec3 l = normalize(theLights[i].position.xyz - f_position);
 			vec3 r = 2*dot(normala, l)*normala - l;
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
 		  	batura = batura + (d * max(0, dot(normala, l)) * (diff+spec));
 		} else{
 			//spot light
-			vec3 l = normalize(theLights[i].position.xyz - erpina_kam);
+			vec3 l = normalize(theLights[i].position.xyz - f_position);
 			vec3 r = 2*dot(normala, l)*normala - l;
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
 			float cspot = max(dot(-l, theLights[i].spotDir), 0);
@@ -64,10 +64,9 @@ void main() {
 	}
 	vec3 ivec = scene_ambient + batura;
 
-	f_color = vec4(ivec, 1.0);
+	vec4 color = vec4(ivec, 1.0);
 	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
-	f_texCoord = v_texCoord;
-	gl_FragColor = vec4(1.0);
+	gl_FragColor = color * vec4(1.0);
 }
 
 
