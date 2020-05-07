@@ -39,7 +39,7 @@ void main() {
 	vec3 v = -normalize(erpina_kam);
 	vec3 batura = vec3(0.0, 0.0, 0.0);
 
-	for(int i=0; i<4; i++){
+	for(int i=0; i<active_lights_n; i++){
 		//diffuse
 		vec3 diff = theMaterial.diffuse*theLights[i].diffuse;
 
