@@ -196,9 +196,9 @@ template<class V> void ShaderProgram::send_uniform(const std::string uname, cons
 
 void ShaderProgram::beforeDraw() {
 
-	Material *mat;
 	Texture *tex;
 	RenderState *rs = RenderState::instance();
+	Material *mat = rs->getFrontMaterial();
 	static char buffer[1024];
 
 	this->send_uniform("modelToCameraMatrix", rs->top(RenderState::modelview));
@@ -255,6 +255,14 @@ void ShaderProgram::beforeDraw() {
 	}
 	if(this->has_capability("sc")){
 		this->send_uniform("sc", rs->getSc());
+	}
+
+	if (has_capability("specmap")) {
+		tex = mat->getSpecularMap();
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::specular);
+			this->send_uniform("specmap", Constants::gl_texunits::specular);
+		}
 	}
 }
 
