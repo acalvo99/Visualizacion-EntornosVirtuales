@@ -50,7 +50,7 @@ void main() {
 			vec3 l = normalize(theLights[i].position.xyz - f_position);
 			vec3 r = 2*dot(normala, l)*normala - l;
 			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
-		  	batura = batura + (d * max(0, dot(normala, l)) * (diff+spec));
+		  	batura = batura + (max(0, dot(normala, l)) * (diff+spec));
 		} else{
 			//spot light
 			vec3 l = normalize(theLights[i].position.xyz - f_position);
@@ -65,8 +65,9 @@ void main() {
 	vec3 ivec = scene_ambient + batura;
 
 	vec4 color = vec4(ivec, 1.0);
-	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
-	gl_FragColor = color * vec4(1.0);
+	vec4 texture = texture2D(texture0, f_texCoord);
+	gl_FragColor = color * texture;
+
 }
 
 
