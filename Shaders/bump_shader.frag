@@ -32,5 +32,33 @@ varying vec3 f_lightDirection[4]; // tangent space
 varying vec3 f_spotDirection[4];  // tangent space
 
 void main() {
-	gl_FragColor = vec4(1.0);
+	vec4 baseColor = texture2D(texture0, f_texCoord);
+	vec3 N = texture2D(bumpmap, f_texCoord).rgb * 2.0 - 1.0;
+	vec3 batura = vec3(0, 0, 0);
+	vec3 normala = normalize(N);
+	vec3 v = normalize(f_viewDirection);
+
+	for(int i=0; i < active_lights_n; ++i) {
+		//diffuse
+		vec3 diff = theLights[i].diffuse * theMaterial.diffuse;
+		vec3 l = normalize(f_lightDirection[i]);
+		vec3 r = 2*dot(normala, l)*normala - l;
+		vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
+		
+		if (theLights[i].cosCutOff == 0.0) {
+		  	batura = batura + (max(0, dot(normala, l)) * (diff+spec));
+		}
+		else {
+			vec3 spotDir = normalize(f_spotDirection[i]);
+			float cspot = max(dot(-l, spotDir), 0);
+			if (cspot > theLights[i].cosCutOff) {
+				batura = batura + (cspot * max(0, dot(normala, l)) * (diff+spec));
+			}
+		}
+	}
+
+	vec3 ivec = scene_ambient + batura;
+
+	vec4 color = vec4(ivec, 1.0);
+	gl_FragColor = color * baseColor;
 }

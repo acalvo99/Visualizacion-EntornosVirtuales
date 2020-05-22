@@ -42,20 +42,20 @@ void main() {
 			vec3 l = normalize(-theLights[i].position.xyz);
 			vec3 r = 2*dot(normala, l)*normala - l;
 			//specular
-			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular); 
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(texel.rgb*theLights[i].specular); 
 			batura = batura + (max(0, dot(normala, l))*(diff + spec)); 
 
 		}else if(theLights[i].cosCutOff==0.0){
 			//point light
 			vec3 l = normalize(theLights[i].position.xyz - f_position);
 			vec3 r = 2*dot(normala, l)*normala - l;
-			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(texel.rgb*theLights[i].specular);
 		  	batura = batura + (max(0, dot(normala, l)) * (diff+spec));
 		} else{
 			//spot light
 			vec3 l = normalize(theLights[i].position.xyz - f_position);
 			vec3 r = 2*dot(normala, l)*normala - l;
-			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(theMaterial.specular*theLights[i].specular);
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(texel.rgb*theLights[i].specular);
 			float cspot = max(dot(-l, theLights[i].spotDir), 0);
 			if (cspot > theLights[i].cosCutOff) {
 				batura = batura + (cspot * max(0, dot(normala, l)) * (diff+spec));

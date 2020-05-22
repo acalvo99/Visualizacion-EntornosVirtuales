@@ -198,7 +198,7 @@ void ShaderProgram::beforeDraw() {
 
 	Texture *tex;
 	RenderState *rs = RenderState::instance();
-	Material *mat = rs->getFrontMaterial();
+	Material *mat;
 	static char buffer[1024];
 
 	this->send_uniform("modelToCameraMatrix", rs->top(RenderState::modelview));
@@ -241,6 +241,7 @@ void ShaderProgram::beforeDraw() {
 	this->send_uniform("active_lights_n", i);
 
 	mat = rs->getFrontMaterial();
+
 	if (mat != 0) {
 		this->send_uniform("theMaterial.diffuse", mat->getDiffuse());
 		this->send_uniform("theMaterial.specular", mat->getSpecular());
@@ -252,17 +253,21 @@ void ShaderProgram::beforeDraw() {
 			tex->bindGLUnit(Constants::gl_texunits::texture);
 			this->send_uniform("texture0", Constants::gl_texunits::texture); // Texture unit 0
 		}
+		if (has_capability("specmap")) {
+			tex = mat->getSpecularMap();
+			if (tex != 0) {
+				tex->bindGLUnit(Constants::gl_texunits::specular);
+				this->send_uniform("specmap", Constants::gl_texunits::specular);
+			}
+		}
+		tex = mat->getBumpMap();
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::bump);
+			this->send_uniform("bumpmap", Constants::gl_texunits::bump);
+		}
 	}
 	if(this->has_capability("sc")){
 		this->send_uniform("sc", rs->getSc());
-	}
-
-	if (has_capability("specmap")) {
-		tex = mat->getSpecularMap();
-		if (tex != 0) {
-			tex->bindGLUnit(Constants::gl_texunits::specular);
-			this->send_uniform("specmap", Constants::gl_texunits::specular);
-		}
 	}
 }
 
