@@ -14,6 +14,7 @@
 #include <string>
 #include <list>
 #include "trfmStack.h"
+#include "camera.h"
 #include "material.h"
 #include "light.h"
 #include "textureManager.h"
@@ -29,7 +30,6 @@
 class RenderState {
 
 public:
-
 	static RenderState *instance();
 
 	// stack type
@@ -100,9 +100,6 @@ public:
 	 */
 	void printTop(stack_t matrixMode);
 
-	float getSc() const;
-    	void setSc(float v);
-
 	///////////////////////////////////////////
 	// Shaders
 
@@ -120,6 +117,12 @@ public:
 	 * @return the current ShaderProgram object (0 if none)
 	 */
 	ShaderProgram *getShader();
+
+	///////////////////////////////////////////
+	// Camera
+
+	void setCamera(Camera *cam);
+	Camera *getCamera() const;
 
 	///////////////////////////////////////////
 	// Lights
@@ -198,8 +201,10 @@ public:
 
 	void print() const;
 
-private:
+	float getSc() const;
+	void setSc(float sc);
 
+private:
 	RenderState();
 	~RenderState();
 	RenderState(const RenderState &);
@@ -217,6 +222,10 @@ private:
 
 	// Lights
 
+	Camera *m_camera; // The camera we are rendering from
+
+	// Lights
+
 	std::list<Light *> m_lights;
 
 	// Materials
@@ -231,9 +240,11 @@ private:
 
 	ShaderProgram *m_activeShader;
 	bool m_drawBBox;
-	float m_sc;
 
 	// SkyBox
 
 	Node *m_skybox;
+
+	float m_sc;
+
 };
