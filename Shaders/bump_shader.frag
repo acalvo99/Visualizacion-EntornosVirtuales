@@ -32,8 +32,12 @@ varying vec3 f_lightDirection[4]; // tangent space
 varying vec3 f_spotDirection[4];  // tangent space
 
 void main() {
+	// Base color
 	vec4 baseColor = texture2D(texture0, f_texCoord);
+
+	// Decode the tangent space normal (from [0..1] to [-1..+1])
 	vec3 N = texture2D(bumpmap, f_texCoord).rgb * 2.0 - 1.0;
+
 	vec3 batura = vec3(0, 0, 0);
 	vec3 normala = normalize(N);
 	vec3 v = normalize(f_viewDirection);
@@ -56,9 +60,10 @@ void main() {
 			}
 		}
 	}
-
 	vec3 ivec = scene_ambient + batura;
 
-	vec4 color = vec4(ivec, 1.0);
-	gl_FragColor = color * baseColor;
+	vec4 f_color = vec4(ivec, 1.0);
+
+	// Final color
+	gl_FragColor = f_color * baseColor;
 }
