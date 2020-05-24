@@ -58,11 +58,13 @@ void CreateSkybox(GObject *gobj,
 		exit(1);
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
 	// Create a new material.
-	Material *matName = MaterialManager::instance()->create("skybox/");
-	// Assign cubemap texture to material.
+	Material *matName = MaterialManager::instance()->create(ctexname);
+	// Assign cubemap texture to material
+	matName->setTexture(ctex);
 	// Assign material to geometry object gobj
+	gobj = GObject::setMaterial(matName);
 	// Create a new Node
 	Node *skynode = NodeManager::instance()->create("MG_SKY");
 	// Assign shader to node
