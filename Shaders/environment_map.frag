@@ -34,5 +34,42 @@ varying vec3 f_normalw;      // world space
 
 
 void main() {
-	gl_FragColor = vec4(1.0);
+	vec3 batura = vec3(0, 0, 0);
+	vec3 normala = normalize(f_normal);
+	vec3 v = normalize(f_viewDirection);
+
+	for(int i=0; i<active_lights_n; i++){
+		//diffuse
+		vec3 diff = theMaterial.diffuse*theLights[i].diffuse;
+
+		if(theLights[i].position.w==0.0){
+			//direction light
+			vec3 l = normalize(-theLights[i].position.xyz);
+			vec3 r = 2*dot(normala, l)*normala - l;
+			//specular
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(Texture2d(specmap,f_texCoord).rgb*theLights[i].specular); 
+			batura = batura + (max(0, dot(normala, l))*(diff + spec)); 
+
+		}else if(theLights[i].cosCutOff==0.0){
+			//point light
+			vec3 l = normalize(theLights[i].position.xyz - f_position);
+			vec3 r = 2*dot(normala, l)*normala - l;
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(Texture2d(specmap,f_texCoord).rgb*theLights[i].specular);
+		  	batura = batura + (max(0, dot(normala, l)) * (diff+spec));
+		} else{
+			//spot light
+			vec3 l = normalize(theLights[i].position.xyz - f_position);
+			vec3 r = 2*dot(normala, l)*normala - l;
+			vec3 spec = pow(max(0, dot(r, v)), theMaterial.shininess)*(Texture2d(specmap,f_texCoord).rgb*theLights[i].specular);
+			float cspot = max(dot(-l, theLights[i].spotDir), 0);
+			if (cspot > theLights[i].cosCutOff) {
+				batura = batura + (cspot * max(0, dot(normala, l)) * (diff+spec));
+			}
+		}
+	}
+	vec3 ivec = scene_ambient + batura;
+
+	vec4 color = vec4(ivec, 1.0);
+	vec4 texture = texture2D(texture0, f_texCoord);
+	gl_FragColor = color * texture;
 }
