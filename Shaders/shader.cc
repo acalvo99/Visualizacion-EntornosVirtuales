@@ -253,7 +253,7 @@ void ShaderProgram::beforeDraw() {
 			tex->bindGLUnit(Constants::gl_texunits::texture);
 			this->send_uniform("texture0", Constants::gl_texunits::texture); // Texture unit 0
 		}
-		if (has_capability("specmap")) {
+		if (this->has_capability("specmap")) {
 			tex = mat->getSpecularMap();
 			if (tex != 0) {
 				tex->bindGLUnit(Constants::gl_texunits::specular);
