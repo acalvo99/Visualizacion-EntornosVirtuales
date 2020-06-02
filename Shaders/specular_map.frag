@@ -29,8 +29,8 @@ varying vec3 f_normal;        // camera space
 varying vec2 f_texCoord;
 
 void main() {
-	vec3 normala = f_normal;
-	vec3 v = f_viewDirection;
+	vec3 normala = normalize(f_normal);
+	vec3 v = normalize(f_viewDirection);
 	vec4 ivec = vec4(scene_ambient,1.0);
 	vec4 diff = vec4(0,0,0,0);
 	vec4 spec = vec4(0,0,0,0);
