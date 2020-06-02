@@ -253,21 +253,23 @@ void ShaderProgram::beforeDraw() {
 			tex->bindGLUnit(Constants::gl_texunits::texture);
 			this->send_uniform("texture0", Constants::gl_texunits::texture); // Texture unit 0
 		}
-		if (this->has_capability("specmap")) {
-			tex = mat->getSpecularMap();
-			if (tex != 0) {
-				tex->bindGLUnit(Constants::gl_texunits::specular);
-				this->send_uniform("specmap", Constants::gl_texunits::specular);
-			}
+	}
+	if(this->has_capability("sc")){
+		this->send_uniform("sc", rs->getSc());
+	}
+	if (has_capability("specmap")) {
+		tex = mat->getSpecularMap();
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::specular);
+			this->send_uniform("specmap", Constants::gl_texunits::specular);
 		}
+	}
+	if (has_capability("bump")) {
 		tex = mat->getBumpMap();
 		if (tex != 0) {
 			tex->bindGLUnit(Constants::gl_texunits::bump);
 			this->send_uniform("bumpmap", Constants::gl_texunits::bump);
 		}
-	}
-	if(this->has_capability("sc")){
-		this->send_uniform("sc", rs->getSc());
 	}
 }
 
