@@ -83,12 +83,12 @@
 			"capabilities" : [ "bump" ]
         },
         {
-            "name" : "specular_map",
-            "vshader" : "Shaders/specular_map.vert",
-            "fshader" : "Shaders/specular_map.frag",
-			"uniforms" : [ {"name" : "specmap", "type" : "usampler"} ],
-			"capabilities" : [ "specmap" ]
-        }
+	    "name" : "specular_map",
+	    "vshader" : "Shaders/specular_map.vert",
+	    "fshader" : "Shaders/specular_map.frag",
+	    "uniforms" : [ {"name" : "specmap", "type" : "usampler"} ],
+	    "capabilities" : [ "specmap" ]
+	}
     ],
     "lights" : [
         {
