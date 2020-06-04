@@ -165,34 +165,12 @@
     ],
     "node" : {
         "name" : "root",
-        "trfm" : [ { "trans" : [0, -10, -100] } ],
-        "shader" : "pervertex",
         "children" : [
             {
                 "name" : "smooth",
                 "gObj" : "./obj/spheres/smooth.obj",
                 "trfm" : [ { "trans" : [-20, 0, 0] } ],
-				"shader" : "cube_env"
-            },
-            {
-                "name" : "chapel",
-                "gObj" : "./obj/chapel/chapel.obj",
-                "trfm" : [ { "trans" : [20, 0, 0] } ]
-            },
-            {
-                "name" : "cubo",
-                "gObj" : "./obj/cubes/cubo.obj",
-                "trfm" : [ { "trans" : [0, 0, -20] } ]
-            },
-            {
-                "name" : "cubotex",
-                "gObj" : "./obj/cubes/cubotex.obj",
-                "trfm" : [ { "trans" : [0, 0, 20] } ]
-            },
-            {
-                "name" : "floor",
-                "gObj" : "./obj/floor/floor.obj",
-                "trfm" : [ { "trans" : [0, -10, 0] } ]
+		"shader" : "cube_env"
             }
         ]
     },

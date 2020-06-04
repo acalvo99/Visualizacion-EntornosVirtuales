@@ -427,12 +427,12 @@ void Node::draw() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	
 	if(m_gObject){
-        	rs->push(RenderState::modelview); // push current matrix into modelview stack
+        rs->push(RenderState::modelview); // push current matrix into modelview stack
 		rs->addTrfm(RenderState::modelview,m_placementWC); // Add T transformation to modelview
 		rs->loadTrfm(RenderState::model, m_placementWC);
 
 		m_gObject->draw();
-        	rs->pop(RenderState::modelview); // pop matrix from modelview stack to current
+        rs->pop(RenderState::modelview); // pop matrix from modelview stack to current
 	}
 	for(list<Node *>::iterator it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         	Node *theChild = *it;
