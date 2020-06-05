@@ -271,6 +271,14 @@ void ShaderProgram::beforeDraw() {
 			this->send_uniform("bumpmap", Constants::gl_texunits::bump);
 		}
 	}
+	if (has_capability("cube_env")) {
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::envmap);
+			this->send_uniform("envmap", Constants::gl_texunits::envmap);
+			Camera* cam = rs->getCamera();
+			this->send_uniform("campos", cam->getPosition());
+		}
+	}
 }
 
 void ShaderProgram::print() const {
