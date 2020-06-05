@@ -1,3 +1,6 @@
-Eszena grafikoko lehenengo zatia ondorengo commit-ean dago:
+Azken zati honetan burutu ditudan lanak honako hauek dira:
 
-'1.fasea'
+-Ispilu-mapa
+-Bump mapping
+-Cubemap (environment ez du funtzionatzen)
+-Itzalak (soilik hasi, gutxi)
