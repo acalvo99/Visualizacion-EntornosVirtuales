@@ -40,6 +40,9 @@ void main() {
 	vec4 diff = vec4(0,0,0,0);
 	vec4 spec = vec4(0,0,0,0);
 
+	vec3 I = normalize(v-f_position);
+	vec3 R = 2*(normala*I)*normala-I;
+
 	for(int i=0; i<active_lights_n; i++){
 		vec3 l = normalize(theLights[i].position.xyz-v);
 

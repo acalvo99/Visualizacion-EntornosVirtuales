@@ -117,7 +117,7 @@ void DisplaySky(Camera *cam) {
 	// Store previous shader
 	ShaderProgram *prev_shader = rs->getShader();
 	// Move Skybox to camera location, so that it always surrounds camera
-	Vector3 campos= cam->getPosition();
+	Vector3 campos = cam->getPosition();
 	Trfm3D localT;
 	localT.setTrans(campos);
 	rs->push(RenderState::modelview);
