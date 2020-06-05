@@ -25,4 +25,6 @@ void main() {
 	f_viewDirection = -f_position;
 	f_normal = (modelToCameraMatrix * vec4(v_normal, 0.0)).xyz;
 	f_texCoord = v_texCoord;
+	f_positionw = (modelToWorldMatrix * vec4(v_position, 1.0)).xyz;
+	f_normalw = (modelToWorldMatrix * vec4(v_normal, 0.0)).xyz;
 }
