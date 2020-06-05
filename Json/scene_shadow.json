@@ -89,7 +89,8 @@
         {
             "name" : "shadow",
             "vshader" : "Shaders/shadowmap.vert",
-            "fshader" : "Shaders/shadowmap.frag"
+            "fshader" : "Shaders/shadowmap.frag",
+            "uniforms" : [ {"name" : "umat4", "type" : "usampler"} ]
         }
     ],
     "lights" : [

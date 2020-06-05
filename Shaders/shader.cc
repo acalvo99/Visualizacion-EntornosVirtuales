@@ -279,6 +279,12 @@ void ShaderProgram::beforeDraw() {
 			this->send_uniform("campos", cam->getPosition());
 		}
 	}
+	if (has_capability("shadow")) {
+		if (tex != 0) {
+			tex->bindGLUnit(Constants::gl_texunits::shadow);
+			this->send_uniform("umat4", Constants::gl_texunits::shadow);
+		}
+	}
 }
 
 void ShaderProgram::print() const {
